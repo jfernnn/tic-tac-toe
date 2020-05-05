@@ -1,0 +1,29 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+#squares div {
+    border: 1px solid black;
+}
+
+#squares {
+    display: grid;
+    grid-template-columns: repeat(3, 10vmin);
+    grid-template-rows: repeat(3, 10vmin);
+    border: 1px solid black;
+    text-align: center;
+}
+
+button {
+    margin-top: 50px;
+}
