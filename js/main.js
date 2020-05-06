@@ -12,12 +12,11 @@ let winner = false;
 /*----- cached element references -----*/
 //const squareEls = Array.from(document.querySelectorAll('#squares > div'));
 const msgEl = document.getElementById('msg');
-const sqEl = document.getElementById('c0r0');
 const btnEl = document.querySelector('button');
 
 /*----- event listeners -----*/
 document.getElementById('squares').addEventListener('click', handleClick);
-btnEl.addEventListener('click', handleCliick);
+btnEl.addEventListener('click', handleButtonClick);
 
 
 
@@ -31,31 +30,35 @@ function init () {
         [0, 0, 0],
         [0, 0, 0]
     ];
+    clearBoard();
     turn = 1;
+    winner = false;
     msgEl.innerHTML = "It is " + playerLookup[turn] + "'s turn";
 }
 
-function render () {
-
-}
-
-function handleClick (evt) {
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            if (evt.target.id === `c${i}r${j}`) {
-                if (evt.target.innerHTML === '') {
-                    board[i][j] = turn;
-                    evt.target.innerHTML = playerLookup[turn];
-                    if (playerLookup[turn] === 'X') turn = -1;
-                    else turn = '1';
-                    console.log(board[i][j]);
+function render (evt) {
+    if(!winner){
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (evt.target.id === `c${i}r${j}`) {
+                    if (evt.target.innerHTML === '') {
+                        board[i][j] = turn;
+                        evt.target.innerHTML = playerLookup[turn];
+                        if (playerLookup[turn] === 'X') turn = -1;
+                        else turn = '1';
+                    }
                 }
             }
         }
+        msgEl.innerHTML = "It is " + playerLookup[turn] + "'s turn";
     }
-    msgEl.innerHTML = "It is " + playerLookup[turn] + "'s turn";
-    /////if(getWinner()) msgEl.innerHTML = "It is Joshua's turn";
+    if(getWinner()) msgEl.innerHTML = playerLookup[-(turn)] + ' won!!';
 }
+
+function handleClick (evt) {
+    render(evt);
+}
+
 function clearBoard(){
     for(var i = 0; i < 3; i++){
         for(var j = 0; j < 3; j++){
@@ -65,11 +68,8 @@ function clearBoard(){
     }
 }
 
-function handleCliick () {
+function handleButtonClick () {
     init();
-    clearBoard();
-    turn = 1;
-    msgEl.innerHTML = "It is " + playerLookup[turn] + "'s turn";
 }
 
 function getWinner () {
@@ -77,19 +77,23 @@ function getWinner () {
     let rhtCol = 0, midCol = 0, lefCol = 0;
     let leftDiag = 0, rghtDiag = 0;
     for (let i = 0; i < 3; i++) {
-        topRow += board[i][2];
-        midRow += board[i][1];
-        botRow += board[i][0];
-        rhtCol += board[2][i];
-        midCol += board[1][i];
-        lefCol += board[0][i];
-        console.log(topRow);
+        topRow += parseInt(board[i][2]);
+        midRow += parseInt(board[i][1]);
+        botRow += parseInt(board[i][0]);
+        rhtCol += parseInt(board[2][i]);
+        midCol += parseInt(board[1][i]);
+        lefCol += parseInt(board[0][i]);
+        leftDiag += parseInt(board[i][i]);
+        rghtDiag += parseInt(board[i][2-i]);
     }
+     
     if (Math.abs(topRow) === 3 ||
         Math.abs(midRow) === 3 ||
         Math.abs(botRow) === 3 ||
         Math.abs(rhtCol) === 3 ||
         Math.abs(midCol) === 3 ||
-        Math.abs(lefCol) === 3) winner = true;
+        Math.abs(lefCol) === 3 ||
+        Math.abs(leftDiag) === 3 ||
+        Math.abs(rghtDiag) === 3) winner = true;
     return winner;
 }

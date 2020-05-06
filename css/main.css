@@ -9,8 +9,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 28px;
     font-family: 'Open Sans', sans-serif;
-  }
+}
 
 #squares div {
     border: 1px solid black;
@@ -22,6 +23,8 @@ body {
     grid-template-rows: repeat(3, 10vmin);
     border: 1px solid black;
     text-align: center;
+    font-size: 40px;
+    line-height: 175%;
 }
 
 button {
